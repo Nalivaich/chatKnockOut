@@ -1,0 +1,69 @@
+header {
+    background-color: #0090C4;
+    height:50px;
+    width: 100%;
+    text-align: center;
+    border-radius: 25px;
+}
+.borderRadius {
+    border-radius: 25px;
+}
+.inlineBlocks {
+    padding-top: 15px;
+    display: inline-block;
+}
+.logInBlock {
+    //display: none;
+}
+.greetingBlock {
+    //float: right;
+}
+
+.userList {
+    background-color: #94D7F0;
+    float: left;
+
+    width: 10%;
+    margin: 25px 0;
+}
+
+.chatWindow {
+    margin: 25px 0 0 50px;
+    float: left;
+
+    width: 70%;
+    background-color: #D5EEFF;
+    text-align: center;
+}
+
+.allMessageArea {
+    width: 100%;
+    height: 600px;
+    opacity: 0.5;
+}
+
+.sendMessageArea {
+    width: 100%;
+    height: 200px;
+    opacity: 0.5;
+}
+
+
+.roomList {
+    float: right;
+    background-color: #94D7F0;
+
+    width: 15%;
+    margin: 25px 0;
+}
+
+
+
+.sectionCols {
+    background-color: #CDF2FF;
+    height: 850px;
+}
+
+.sectionBlock {
+    margin-top: 20px;
+}

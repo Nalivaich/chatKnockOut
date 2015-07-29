@@ -3,9 +3,76 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <script type='text/javascript' src='js/knockout-3.3.0.js'></script>
+    <script type='text/javascript' src="js/knockout-3.3.0.js"></script>
+    <link type="text/css" href="css/styles.css"  rel="stylesheet"/>
 </head>
-<body>
+<body >
+
+
+<header>
+    <div class="logInBlock inlineBlocks" >
+        <label for="loginInput">Login: <input type="text" class="loginInput" id="loginInput"/></label>
+        <label for="passwordInput">Password: <input type="password" class="passwordInput" id="passwordInput"/></label>
+        <input type="button" class="enterButton" value="LogIn"/>
+    </div>
+    <div class = "greetingBlock inlineBlocks">
+        <span>Welcome: <span class="userName"></span></span>
+    </div>
+</header>
+
+<section>
+    <div class="userList borderRadius">
+
+    </div>
+
+    <div>
+        <div class="chatWindow borderRadius">
+            <textarea class="allMessageArea">
+                SomeText
+            </textarea>
+
+            <textarea>
+                Input your text
+            </textarea>
+            <input type="button" value="Send" />
+            <input type="button" value="Remove room" />
+
+        </div>
+        <div class="roomList borderRadius">
+            <div class="createRoom">
+                <label>Private Mode<input type="checkbox"/></label>
+                <input type="button" value="Create new room"/>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+    function viewModel() {
+        var self = this;
+        self.intVariable = ko.observable('11111');
+        self.firstName =  ko.observable('John');
+        self.lastName =  ko.observable('Sheppard');
+        self.fullName = ko.computed(function() {
+            return (self.firstName() + " " + self.lastName());
+        }, viewModel);
+
+        self.Myarray = ko.observableArray([
+                'sdfsdfsdfs',
+                'qqqqqqqqqqq'
+        ]);
+        self.addElement = function() {
+            self.Myarray.push('new element');
+        };
+        self.changeVariable = function() {
+            self.intVariable("");
+        }
+    }
+
+    ko.applyBindings(viewModel);
+
+</script>
 
 </body>
 </html>
