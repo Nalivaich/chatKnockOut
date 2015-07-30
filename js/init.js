@@ -18,7 +18,6 @@
      RoomsRepository.addRoomInRepository(RoomsRepository.generateRoom(56));
 
 
-
      function AppViewModel() {
 
 

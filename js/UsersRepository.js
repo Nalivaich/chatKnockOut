@@ -57,7 +57,7 @@ define(["jquery", "knockout-3.3.0"],function($, ko) {
                 var newUser = new self.UserConstructor();
                 newUser.id = id || self.usersRepository.length+1;
                 newUser.name = name || 'null';
-                newUser.lastName = lastName  || 'null';
+                newUser.lastName = lastName  || '';
                 newUser.external = external || 'null';
                 return newUser;
             }
