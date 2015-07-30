@@ -3,13 +3,13 @@
  */
 
 
-define(["jquery"],function($) {
+define(["jquery", "knockout-3.3.0"],function($, ko) {
         function UsersRepository() {
             'use strict';
 
             var self = this;
 
-            var usersRepository = [];
+            self.usersRepository = ko.observableArray([]);
 
             var names = [
                 'Kirill',
@@ -40,6 +40,7 @@ define(["jquery"],function($) {
                 this.name = '';
                 this.lastName = '';
                 this.external = '';
+                return this;
             };
 
             self.generateUser = function( ) {
@@ -48,27 +49,27 @@ define(["jquery"],function($) {
                 newUser.name = names[randomValue];
                 randomValue = giveMeRandomValue(0,9);
                 newUser.lastName = lastNames[randomValue];
-                newUser.id = usersRepository.length+1;
+                newUser.id = self.usersRepository.length+1;
                 return newUser;
             };
 
             function buildUserObject(id, name, lastName, external) {
                 var newUser = new self.UserConstructor();
-                newUser.id = id || usersRepository.length+1;
+                newUser.id = id || self.usersRepository.length+1;
                 newUser.name = name || 'null';
                 newUser.lastName = lastName  || 'null';
                 newUser.external = external || 'null';
                 return newUser;
             }
             self.returnUsersRepository = function() {
-                return usersRepository;
+                return self.usersRepository;
             };
 
             // return new index
             self.addUserInRepository = function(userObject) {
                 var newOnject = buildUserObject(userObject.id, userObject.name, userObject.lastName, userObject.external);
-                usersRepository.push(newOnject);
-                return usersRepository.length - 1;
+                self.usersRepository.push(newOnject);
+                return self.usersRepository.length - 1;
             };
 
             function giveMeRandomValue(min , max) {

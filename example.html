@@ -6,7 +6,7 @@
     <script type='text/javascript' src="js/knockout-3.3.0.js"></script>
     <link href="bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet" />
     <link href="css/styles.css" type="text/css" rel="stylesheet"/>
-    <script data-main="js/init" src="js/require.js"></script>
+
 </head>
 <body>
 
@@ -16,13 +16,13 @@
 
         <div class="form-group col-md-offset-3">
             <label class="sr-only" for="exampleInputName3">Email address</label>
-            <input type="text" class="form-control" id="exampleInputName3" placeholder="LogIn">
+            <input type="text" class="form-control" id="exampleInputName3" placeholder="LogIn" name="loginInput">
         </div>
         <div class="form-group">
             <label class="sr-only" for="exampleInputPassword3">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
+            <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password" name="passwordInput">
         </div>
-        <button type="submit" class="btn btn-success">Sign in</button>
+        <button type="submit" class="btn btn-success " data-bind="click: readUserInfo">Sign in</button>
         <div class = "greetingBlock inlineBlocks">
             <span class="text-success">Welcome: <span class="userName"></span></span>
 
@@ -34,7 +34,8 @@
 <div class="container  col-md-12">
     <div class="row sectionBlock">
         <div class="col-md-2 sectionCols" >
-            <ul class="usersList" data-bind="template: {name: 'usersTemplate', foreach:Myarray}">
+            <h2 class="text-success col-md-6 col-md-offset-3">User List: </h2>
+            <ul class="usersList" data-bind="template: {name: 'usersTemplate', foreach: usersRepository}">
 
             </ul>
         </div>
@@ -47,24 +48,39 @@
                 Input your text
             </textarea>
             <input type="button" value="Send message" class="btn btn-success" />
-            <input type="button" value="Remove room" class="btn btn-danger" />
+            <input type="button" value="Add new user" class="btn btn-primary" />
+            <input type="button" value="Remove room" class="btn btn-danger removeRoomButton" />
         </div>
         <div class="col-md-2 sectionCols ">
-            <div class="col-md-offset-3 createNewRoom">
-                <div class="row">
+            <div class=" createNewRoom">
+                <div class="row col-md-offset-3">
                     <input type="button" value="Create new room" class="btn btn-primary "/>
+                    <label class="text-primary">Use private Mode: <input type="checkbox"/></label>
                 </div>
-                <div class="row">
-                        <label class="text-primary">Use private Mode: <input type="checkbox"/></label>
-                </div>
+
+                <h2 class="text-success col-md-6 col-md-offset-3">Room List: </h2>
+                <ul class="usersList" data-bind="template: {name: 'roomTemplate', foreach: roomsRepository}">
+                </ul>
+
             </div>
         </div>
     </div>
 </div>
 
 
+<script id="roomTemplate" type="text/html">
+    <li class="row col-md-11 col-md-offset-1 text-success">
+        <p><span class="glyphicon glyphicon-comment"></span></p>
+        <p>Roome name: <span data-bind="text: name "></span></p>
+        <p>Room ID: <span data-bind="text: id"></span></p>
+
+        <p>Number of Users: <span data-bind="text: (usersIDInRoom.length + 1)"></span></p>
+    </li>
+</script>
+
 <script id="usersTemplate" type="text/html">
-    <li class="row col-md-10 col-md-offset-2 text-success">
+    <li class="row col-md-11 col-md-offset-1 text-success">
+        <p><span class="glyphicon glyphicon-user"></span></p>
         <p>User: <span data-bind="text: name + ' ' + lastName"></span></p>
         <p>User ID:  <span data-bind="text: id"></span></p>
         <p>Status: Online</p>
@@ -76,34 +92,10 @@
 
 
 <script type="text/javascript">
-    function viewModel() {
-        var self = this;
-        self.intVariable = ko.observable('11111');
-        self.firstName =  ko.observable('John');
-        self.lastName =  ko.observable('Sheppard');
-        self.fullName = ko.computed(function() {
-            return (self.firstName() + " " + self.lastName());
-        }, viewModel);
-
-        self.Myarray = ko.observableArray([
-            { name: 'Bert', lastName: 'Igorevich', id:0 },
-            { name: 'Charles', lastName: 'Igor', id:1 },
-            { name: 'Denise', lastName: 'Igorevich', id:2 }
-        ]);
-        self.addElement = function() {
-            self.Myarray.push('new element');
-        };
-        self.changeVariable = function() {
-            self.intVariable("");
-        }
-    }
-
-    ko.applyBindings(viewModel);
-
 
 
 </script>
 
-
+<script data-main="js/init" src="js/require.js"></script>
 </body>
 </html>
