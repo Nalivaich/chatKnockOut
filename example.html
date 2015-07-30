@@ -33,8 +33,10 @@
 
 <div class="container  col-md-12">
     <div class="row sectionBlock">
-        <div class="col-md-2 sectionCols">
+        <div class="col-md-2 sectionCols" >
+            <ul class="usersList" data-bind="template: {name: 'usersTemplate', foreach:Myarray}">
 
+            </ul>
         </div>
         <div class="col-md-8 sectionCols ">
             <textarea class="allMessageArea">
@@ -48,7 +50,7 @@
             <input type="button" value="Remove room" class="btn btn-danger" />
         </div>
         <div class="col-md-2 sectionCols ">
-            <div class="col-md-offset-3">
+            <div class="col-md-offset-3 createNewRoom">
                 <div class="row">
                     <input type="button" value="Create new room" class="btn btn-primary "/>
                 </div>
@@ -61,13 +63,16 @@
 </div>
 
 
-
-
-
-<script id="firstTemplate" type="text/html">
-    <p><span data-bind="text: intVariable"></span></p>
-    <input type="button" value="click_me" data-bind="click: changeVariable" />
+<script id="usersTemplate" type="text/html">
+    <li class="row col-md-10 col-md-offset-2 text-success">
+        <p>User: <span data-bind="text: name + ' ' + lastName"></span></p>
+        <p>User ID:  <span data-bind="text: id"></span></p>
+        <p>Status: Online</p>
+    </li>
 </script>
+
+
+
 
 
 <script type="text/javascript">
@@ -81,8 +86,9 @@
         }, viewModel);
 
         self.Myarray = ko.observableArray([
-            'sdfsdfsdfs',
-            'qqqqqqqqqqq'
+            { name: 'Bert', lastName: 'Igorevich', id:0 },
+            { name: 'Charles', lastName: 'Igor', id:1 },
+            { name: 'Denise', lastName: 'Igorevich', id:2 }
         ]);
         self.addElement = function() {
             self.Myarray.push('new element');

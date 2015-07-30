@@ -9,7 +9,7 @@ define(["jquery"],function($) {
 
             var self = this;
 
-            var roomsRepository = [];
+            self.roomsRepository = [];
             var roomNames = [
                 'My Best Room',
                 'Only men)',
@@ -24,43 +24,53 @@ define(["jquery"],function($) {
             ];
             self.roomsConstructor = function() {
                 this.id = 0;
+                this.createrId = 0;
                 this.name = '';
                 this.privateFlag = false;
-                this.messagesHistory = '';
+                this.usersIDInRoom = [];
+                this.messagesHistory = [];
                 this.external = '';
+
             };
 
-            self.generateRoom = function( ) {
+            self.generateRoom = function(createrId) {
                 var newRoom = new self.roomsConstructor();
                 var randomValue = giveMeRandomValue(0,9);
                 newRoom.name = roomNames[randomValue];
-                newRoom.id = roomsRepository.length+1;
+                randomValue = giveMeRandomValue(0,9);
+                newRoom.createrId = createrId || 1;
+                newRoom.id = self.roomsRepository.length+1;
+                newRoom.usersIDInRoom.push(1);
                 return newRoom;
             };
+            self.addUserInRoom = function(roomIndex, userId) {
+                self.roomsRepository[roomIndex].usersIDInRoom.push(userId);
+            };
 
-            function buildRoomObject(id, name, privateFlag, external) {
-                var newUser = new self.UserConstructor();
-                newUser.id = id || 0;
+            function buildRoomObject(id, createrId, name, privateFlag, usersInRoom, external) {
+                var newUser = new self.roomsConstructor();
+                newUser.id = id || self.roomsRepository.length+1;
+                newUser.createrId = createrId || 'unknown';
                 newUser.name = name || 'null';
                 newUser.privateFlag = privateFlag  || false;
+                newUser.usersIDInRoom[0] = usersInRoom || 0;
                 newUser.external = external || 'null';
                 return newUser;
             }
 
             // return new index
-            self.addRoomInRepository = function(userObject) {
-                roomsRepository.push(userObject);
-                return roomsRepository.length - 1;
-            };
-            // return new index
-            self.addRoomInRepository = function(id, name, lastName, external) {
-                var newOnject = buildRoomObject(id, name, lastName, external);
-                roomsRepository.push(newOnject);
-                return roomsRepository.length - 1;
+            self.addRoomInRepository = function(roomObject) {
+                var newOnject = buildRoomObject(roomObject.id, roomObject.createrId,  roomObject.name, roomObject.privateFlag, roomObject.usersIDInRoom, roomObject.external);
+                self.roomsRepository.push(newOnject);
+                return self.roomsRepository.length - 1;
             };
 
             self.removeRoomFromRepository = function(index) {
-                roomsRepository.splice(index, 1);
+                self.roomsRepository.splice(index, 1);
+            };
+
+            self.returnRoomsRepository = function() {
+                return self.roomsRepository;
             };
 
             function giveMeRandomValue(min , max) {

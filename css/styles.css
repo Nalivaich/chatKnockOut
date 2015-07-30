@@ -67,3 +67,12 @@ header {
 .sectionBlock {
     margin-top: 20px;
 }
+
+.usersList li {
+    line-height: 10px;
+    margin-top: 10px;
+}
+
+.createNewRoom {
+    margin-top: 15px;
+}

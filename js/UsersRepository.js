@@ -54,21 +54,19 @@ define(["jquery"],function($) {
 
             function buildUserObject(id, name, lastName, external) {
                 var newUser = new self.UserConstructor();
-                newUser.id = id || 0;
+                newUser.id = id || usersRepository.length+1;
                 newUser.name = name || 'null';
                 newUser.lastName = lastName  || 'null';
                 newUser.external = external || 'null';
                 return newUser;
             }
-            // return new index
-            self.addUserInRepository = function(userObject) {
-                usersRepository.push(userObject);
-                return usersRepository.length - 1;
+            self.returnUsersRepository = function() {
+                return usersRepository;
             };
 
             // return new index
-            self.addUserInRepository = function(id, name, lastName, external) {
-                var newOnject = buildUserObject(id, name, lastName, external);
+            self.addUserInRepository = function(userObject) {
+                var newOnject = buildUserObject(userObject.id, userObject.name, userObject.lastName, userObject.external);
                 usersRepository.push(newOnject);
                 return usersRepository.length - 1;
             };
@@ -76,6 +74,7 @@ define(["jquery"],function($) {
             function giveMeRandomValue(min , max) {
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
+
 
         }
         return new UsersRepository();
