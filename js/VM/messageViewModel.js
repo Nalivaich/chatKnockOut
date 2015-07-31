@@ -3,7 +3,7 @@
  */
 
 
-define(["jquery", "knockout-3.3.0"],function($, ko) {
+define(["../jquery", "../knockout-3.3.0"],function($, ko) {
         function MessagesViewModel() {
             'use strict';
 

@@ -10,7 +10,7 @@ define(["jquery", "knockout-3.3.0"],function($, ko) {
             var self = this;
 
             self.usersRepository = ko.observableArray([]);
-
+            var counter = 0;
             var names = [
                 'Kirill',
                 'Vlad',
@@ -40,6 +40,7 @@ define(["jquery", "knockout-3.3.0"],function($, ko) {
                 this.name = '';
                 this.lastName = '';
                 this.external = '';
+                this.fullName = '';
                 return this;
             };
 
@@ -49,7 +50,9 @@ define(["jquery", "knockout-3.3.0"],function($, ko) {
                 newUser.name = names[randomValue];
                 randomValue = giveMeRandomValue(0,9);
                 newUser.lastName = lastNames[randomValue];
-                newUser.id = self.usersRepository.length+1;
+                newUser.fullName = (newUser.name + ' ' + newUser.lastName);
+                newUser.id = counter;//self.usersRepository.length+1;
+                counter++;
                 return newUser;
             };
 
@@ -58,6 +61,7 @@ define(["jquery", "knockout-3.3.0"],function($, ko) {
                 newUser.id = id || self.usersRepository.length+1;
                 newUser.name = name || 'null';
                 newUser.lastName = lastName  || '';
+                newUser.fullName = newUser.name + ' ' + newUser.lastName;
                 newUser.external = external || 'null';
                 return newUser;
             }

@@ -6,6 +6,11 @@
     <script type='text/javascript' src="js/knockout-3.3.0.js"></script>
     <link href="bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet" />
     <link href="css/styles.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script src="bootstrap-3.3.5-dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script data-main="js/AppViewModel" src="js/require.js"></script>
+
+
 
 </head>
 <body>
@@ -16,11 +21,11 @@
 
         <div class="form-group col-md-offset-3">
             <label class="sr-only" for="exampleInputName3">Email address</label>
-            <input type="text" class="form-control" id="exampleInputName3" placeholder="LogIn" name="loginInput">
+            <input type="text" class="form-control" id="exampleInputName3" placeholder="LogIn" name="loginInput" data-bind="value: currentUserName">
         </div>
         <div class="form-group">
             <label class="sr-only" for="exampleInputPassword3">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password" name="passwordInput">
+            <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password" name="passwordInput" data-bind="value: currentUserPassword">
         </div>
         <button type="submit" class="btn btn-success " data-bind="click: readUserInfo">Sign in</button>
         <div class = "greetingBlock inlineBlocks">
@@ -35,7 +40,7 @@
     <div class="row sectionBlock">
         <div class="col-md-2 sectionCols addScroll" >
             <h2 class="text-success col-md-6 col-md-offset-3">User List: </h2>
-            <ul class="usersList" data-bind="template: {name: 'usersTemplate', foreach: usersRepository}">
+            <ul class="usersList" data-bind="template: {name: 'usersTemplate', foreach: usersRepository}" >
 
             </ul>
         </div>
@@ -53,8 +58,9 @@
         </div>
         <div class="col-md-2 sectionCols addScroll">
             <div class=" createNewRoom">
+
                 <div class="row col-md-offset-3">
-                    <input type="button" value="Create new room" class="btn btn-primary "/>
+                    <input type="button" value="Create new room" class="btn btn-primary" data-toggle="modal" href="#myModal" />
                     <label class="text-primary">Use private Mode: <input type="checkbox"/></label>
                 </div>
 
@@ -68,20 +74,43 @@
 </div>
 
 
+<!-- Dialog window-->
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title text-primary">You want create new room</h4>
+            </div>
+            <div class="modal-body">
+                <p class="">Please enter the name of your new room </p>
+                <div>
+                    <input type="text" class="newRoomNameInput form-control" name="newRoomNameInput" data-bind="value: newRoomName" placeholder="Room name" />
+                </div>
+                <p class="text-warning"><small>Name of the room allowing users to quickly find it</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bind="click: createRoom" data-dismiss="modal">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script id="roomTemplate" type="text/html">
     <li class="row col-md-12 col-md-offset-0 text-success">
         <p><span class="glyphicon glyphicon-comment"></span></p>
         <p>Roome name: <span data-bind="text: name "></span></p>
         <p>Room ID: <span data-bind="text: id"></span></p>
-
         <p>Number of Users: <span data-bind="text: (usersIDInRoom.length + 1)"></span></p>
     </li>
 </script>
 
-<script id="usersTemplate" type="text/html">
-    <li class="row col-md-12 col-md-offset-0 text-success">
+<script id="usersTemplate" type="text/html" >
+    <li class="row col-md-12 col-md-offset-0 text-success" data-bind="click: $parent.showFunc(name, id, lastName)">
         <p><span class="glyphicon glyphicon-user"></span></p>
-        <p>User: <span data-bind="text: name + ' ' + lastName"></span></p>
+        <p>User: <span data-bind="text: fullName"></span></p>
         <p>User ID:  <span data-bind="text: id"></span></p>
         <p>Status: Online</p>
     </li>
@@ -102,6 +131,5 @@
 
 </script>
 
-<script data-main="js/init" src="js/require.js"></script>
 </body>
 </html>
