@@ -54,7 +54,7 @@
                 <ul class="usersList" data-bind="template: {name: 'messageTemplate', foreach: messagesHistory}">
                 </ul>
             </div>
-
+            <div data-bind="css: ">
             <textarea class="sendMessageArea" data-bind="textInput: currentMessage, enable: activeRoomFlag">
                 Input your text
             </textarea>
@@ -62,6 +62,7 @@
             <input type="button" value="Add new user" class="btn btn-primary" name="123123" data-bind="enable: roomCreaterFlag" data-toggle="modal" href="#userList" />
             <input type="button" value="Remove user" class="btn btn-danger" data-bind="enable: roomCreaterFlag" data-toggle="modal" href="#userList" />
             <input type="button" value="Remove room" class="btn btn-danger removeRoomButton" data-bind="click: removeRoom,enable: roomCreaterFlag" />
+            </div>
         </div>
         <div class="col-md-2 sectionCols addScroll">
             <div class=" createNewRoom">

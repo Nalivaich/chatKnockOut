@@ -53,7 +53,6 @@
 
          };
 
-
          self.showFunc = function(fullname, id, lastName) {
            alert(fullname());
          };
@@ -81,12 +80,12 @@
          self.changeCurrentRoom = function(newCurrentRoomId) {
              if(self.currentUserIndex() == '' || self.currentUserIndex() == undefined) {
                  return false;
-             }allUsersVM.addUserRoom(self.currentUserIndex(), self.currentRoomIndex(), function() {
-                 self.currentRoomIndex(newCurrentRoomId);
-                 self.roomCreaterFlag(allUsersVM.isCurrentUserRoom(self.currentRoomIndex(), self.currentUserIndex()));
-                 self.addUserInRoom(self.currentUserIndex());
-                 self.activeRoomFlag(true);
-             });
+             }
+             self.currentRoomIndex(newCurrentRoomId);
+             self.roomCreaterFlag(allUsersVM.isCurrentUserRoom(self.currentRoomIndex(), self.currentUserIndex()));
+             self.addUserInRoom(self.currentUserIndex());
+             self.activeRoomFlag(true);
+
 
          };
 

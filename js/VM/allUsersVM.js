@@ -46,6 +46,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/userViewModel", "../services/userS
                 if(currentRoomIndex === '' || currentUserIndex === '') {
                     return false;
                 }
+
                 if(currentRoomIndex && currentUserIndex) {}
                 //alert(self.usersRepository()[currentUserIndex].userRooms().length);
                     for(var i = 0; i < self.usersRepository()[currentUserIndex].userRooms().length; i++) {
