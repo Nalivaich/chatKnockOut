@@ -4,7 +4,7 @@
 
 
 define(["../jquery", "../knockout-3.3.0", "services/roomService"],function($, ko, roomService) {
-        function RoomsViewModel(data) {
+        function RoomViewModel(data) {
             'use strict';
 
             var self = this;
@@ -42,7 +42,7 @@ define(["../jquery", "../knockout-3.3.0", "services/roomService"],function($, ko
 
 
         }
-        return RoomsViewModel;
+        return RoomViewModel;
     }
 );
 

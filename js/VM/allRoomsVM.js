@@ -2,7 +2,7 @@
  * Created by vitali.nalivaika on 31.07.2015.
  */
 
-define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomService"],function($, ko, roomViewModel, roomService) {
+define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomService"],function($, ko, RoomViewModel, roomService) {
         function RoomsViewModel() {
             'use strict';
 
@@ -11,7 +11,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
             self.roomsRepository = ko.observableArray([]);
 
             self.add = function(name, createrID, privateFlag, nextfunction) {
-                var newRoomObject = new roomViewModel({
+                var newRoomObject = new RoomViewModel({
                     name: name,
                     createrId: createrID,
                     id: self.roomsRepository().length,
@@ -30,12 +30,12 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
                 return (self.roomsRepository().length);
             };
 
-            self.remove = function(currentRoomIndex, nextfunction) {
-                var newRoomObject = new roomViewModel({id:''});
+            self.remove = function(currentRoomIndex, nextFunction) {
+                var newRoomObject = new RoomViewModel({id:''});
 
                 newRoomObject.remove(newRoomObject, function () {
                     self.roomsRepository.splice(currentRoomIndex, 1);
-                    nextfunction();
+                    nextFunction();
                     return true;
                 }, function () {
 
@@ -45,7 +45,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
             };
 
             self.addUserInRoom = function(userIndex, currentRoomIndex) {
-                var newRoomObject = new roomViewModel({id:''});
+                var newRoomObject = new RoomViewModel({id:''});
 
                 newRoomObject.remove(newRoomObject, function () {
                     for(var i = 0; i < self.roomsRepository()[currentRoomIndex].usersIDInRoom().length; i++) {
@@ -59,6 +59,20 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
                 }, function () {
 
                 });
+            };
+
+
+            self.isUserInRoom = function(userIndex, currentRoomIndex, nextFunction) {
+
+                if(currentRoomIndex === '' || currentRoomIndex === '') {
+                    return false;
+                }
+                for(var i = 0; i < self.roomsRepository()[currentRoomIndex].usersIDInRoom().length; i++) {
+                    if(self.roomsRepository()[currentRoomIndex].usersIDInRoom()[i].userIndex() == userIndex) {
+                        return true;
+                    }
+                }
+                return false;
             };
 
 
@@ -94,7 +108,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
                 var randomValue = giveMeRandomValue(0,9);
                 name = roomNames[randomValue];
                 idCreater = createrId || giveMeRandomValue(0,5);
-                var newRoomObject = new roomViewModel({
+                var newRoomObject = new RoomViewModel({
                     name: name,
                     createrId: idCreater,
                     id: self.roomsRepository().length,

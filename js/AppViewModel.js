@@ -18,6 +18,7 @@
          self.activeRoomFlag = ko.observable(false);
          self.roomCreaterFlag =  ko.observable(false);
          self.authorizationFlag = ko.observable(false);
+         self.addOrRemove  = ko.observable(false);
          /*self.currentUserObject = new UsersRepository.UserConstructor();
          self.authorizationVisible = true;*/
 
@@ -47,11 +48,11 @@
          };
 
          self.addUserInRoom = function(userIndex) {
+
              allRoomsVM.addUserInRoom(userIndex, self.currentRoomIndex());
          };
-         self.addUserToChat = function() {
 
-         };
+
 
          self.showFunc = function(fullname, id, lastName) {
            alert(fullname());
@@ -77,8 +78,12 @@
 
          };
 
-         self.changeCurrentRoom = function(newCurrentRoomId) {
+         self.changeCurrentRoom = function(newCurrentRoomId, currentPrivateFlag) {
              if(self.currentUserIndex() == '' || self.currentUserIndex() == undefined) {
+                 return false;
+             }
+             if(currentPrivateFlag && !(allRoomsVM.isUserInRoom(self.currentUserIndex(),newCurrentRoomId))){
+                 alert("access denied");
                  return false;
              }
              self.currentRoomIndex(newCurrentRoomId);
@@ -88,6 +93,7 @@
 
 
          };
+
 
          //add users/rooms
          useMethodNTimes(6,allUsersVM.pushGeneratedUser);
