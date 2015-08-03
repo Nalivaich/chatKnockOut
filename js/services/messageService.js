@@ -1,10 +1,10 @@
 /**
- * Created by vitali.nalivaika on 31.07.2015.
+ * Created by Виталий on 02.08.2015.
  */
 
 
 define(["../jquery"],function($) {
-        function RoomService() {
+        function MessageService() {
             'use strict';
 
             var self = this;
@@ -13,17 +13,9 @@ define(["../jquery"],function($) {
                     function() {
                         onSuccess();
                     }, Math.random() * 3000 + 1000);
-            };
-
-
-            self.remove = function(onSuccess, onError) {
-                window.setTimeout(
-                    function() {
-                        onSuccess();
-                    }, Math.random() * 3000 + 1000);
             }
         }
-        return new RoomService();
+        return new MessageService();
     }
 );
 

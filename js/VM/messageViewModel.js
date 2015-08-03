@@ -3,29 +3,30 @@
  */
 
 
-define(["../jquery", "../knockout-3.3.0"],function($, ko) {
-        function MessagesViewModel() {
+define(["../jquery", "../knockout-3.3.0", "services/messageService"],function($, ko, messageService) {
+        function MessagesViewModel(data) {
             'use strict';
 
             var self = this;
 
-            self.idRoom = ko.observable(0);
-            self.idUser = ko.observable('');
-            self.message = ko.observable('');
-            self.external = ko.observable('');
+            self.idRoom = ko.observable(( data.idRoom || 0));
+            self.idUser = ko.observable(( data.idUser || 0));
+            self.message = ko.observable(( data.message || 0));
+            self.external = ko.observable(( data.external || 0));
 
-            self.UserConstructor = function () {
-                this.idRoom = 0;
-                this.idUser = '';
-                this.message = '';
-                this.external = '';
-                return this;
+            self.add = function(userObject,onSuccess, onError) {
+                return(messageService.add(function () {
+                    onSuccess();
+                }, onError , userObject))
             };
 
+
         }
-        return new MessagesViewModel();
+        return MessagesViewModel;
     }
 );
+
+
 
 
 /*var promiseCount = 0;

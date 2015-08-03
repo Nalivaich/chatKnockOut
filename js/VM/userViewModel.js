@@ -12,6 +12,7 @@ define(["../jquery", "../knockout-3.3.0", "../services/userService"],function($,
             self.name = ko.observable(data.name || '');
             self.lastName = ko.observable(data.lastName || '');
             self.password = ko.observable(data.password || '1111');
+            self.userRooms = ko.observableArray([ ]);
             self.external = ko.observable(data.external || '');
 
 
@@ -21,6 +22,13 @@ define(["../jquery", "../knockout-3.3.0", "../services/userService"],function($,
 
             self.add = function(userObject,onSuccess, onError) {
                 return(userService.add(function () {
+                    doSmth();
+                    onSuccess();
+                }, onError , userObject))
+            };
+
+            self.addUserRoom = function(userObject,onSuccess, onError) {
+                return(userService.addUserRoom(function () {
                     doSmth();
                     onSuccess();
                 }, onError , userObject))

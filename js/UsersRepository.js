@@ -36,11 +36,11 @@ define(["jquery", "knockout-3.3.0"],function($, ko) {
                 'Kazimirovich'
             ];
             self.UserConstructor = function() {
-                this.id = 0;
-                this.name = '';
-                this.lastName = '';
-                this.external = '';
-                this.fullName = '';
+                this.id = ko.observable(0);
+                this.name = ko.observable('');
+                this.lastName = ko.observable('');
+                this.external = ko.observable('');
+                this.fullName = ko.observable('');
                 return this;
             };
 
