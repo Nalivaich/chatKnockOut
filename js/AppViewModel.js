@@ -27,16 +27,17 @@
 
         self.createRoom = function() {
              //create new room
-            self.currentRoomIndex(allRoomsVM.add(self.newRoomName(), self.currentUserIndex(), self.privateFlag()));
-            if(self.currentUserIndex()) {
-                allUsersVM.addUserRoom(self.currentUserIndex(), self.currentRoomIndex());
-            }
+            self.currentRoomIndex(allRoomsVM.add(self.newRoomName(), self.currentUserIndex(), self.privateFlag(), function() {
+                //if(self.currentUserIndex()) {
+                    allUsersVM.addUserRoom(self.currentUserIndex(), self.currentRoomIndex(), function() {
+                        self.roomCreaterFlag(allUsersVM.isCurrentUserRoom(self.currentRoomIndex() , self.currentUserIndex()));
+                        //self.addUserInRoom(self.currentUserIndex());
+                        self.activeRoomFlag(true);
+                        //self.roomCreaterFlag(true);
+                        self.newRoomName('');
+                    });
+            }));
 
-            self.roomCreaterFlag(allUsersVM.isCurrentUserRoom(self.currentRoomIndex() , self.currentUserIndex()));
-            //self.addUserInRoom(self.currentUserIndex());
-            self.activeRoomFlag(true);
-            //self.roomCreaterFlag(true);
-            self.newRoomName('');
          };
 
          self.removeRoom = function() {
@@ -78,16 +79,20 @@
          };
 
          self.changeCurrentRoom = function(newCurrentRoomId) {
-             self.currentRoomIndex(newCurrentRoomId);
-             self.roomCreaterFlag(allUsersVM.isCurrentUserRoom(self.currentRoomIndex() , self.currentUserIndex()));
-             self.addUserInRoom(self.currentUserIndex());
-             self.activeRoomFlag(true);
+             if(self.currentUserIndex() == '' || self.currentUserIndex() == undefined) {
+                 return false;
+             }allUsersVM.addUserRoom(self.currentUserIndex(), self.currentRoomIndex(), function() {
+                 self.currentRoomIndex(newCurrentRoomId);
+                 self.roomCreaterFlag(allUsersVM.isCurrentUserRoom(self.currentRoomIndex(), self.currentUserIndex()));
+                 self.addUserInRoom(self.currentUserIndex());
+                 self.activeRoomFlag(true);
+             });
 
          };
 
          //add users/rooms
-         useMethodNTimes(5,allUsersVM.pushGeneratedUser);
-         useMethodNTimes(5,allRoomsVM.pushGeneratedRoom);
+         useMethodNTimes(6,allUsersVM.pushGeneratedUser);
+         useMethodNTimes(6,allRoomsVM.pushGeneratedRoom);
 
          function useMethodNTimes(N, method) {
              for(var i = 0; i < N;i++ ) {

@@ -25,11 +25,11 @@ define(["../jquery", "../knockout-3.3.0", "VM/userViewModel", "../services/userS
                 return (self.usersRepository().length ); //неверно,, задержка все ломает
             };
 
-            self.addUserRoom = function(userIndex, roomIndex) {
-
+            self.addUserRoom = function(userIndex, roomIndex, nextFunction) {
                 var newUserObject = new UserViewModel({id: ''});
                 newUserObject.addUserRoom(newUserObject, function () {
                     self.usersRepository()[userIndex].userRooms.push({roomIndex: ko.observable(roomIndex)});
+                    nextFunction();
                     return true;
                 }, function () {
 
@@ -47,6 +47,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/userViewModel", "../services/userS
                     return false;
                 }
                 if(currentRoomIndex && currentUserIndex) {}
+                //alert(self.usersRepository()[currentUserIndex].userRooms().length);
                     for(var i = 0; i < self.usersRepository()[currentUserIndex].userRooms().length; i++) {
                        // alert(self.usersRepository()[currentUserIndex].userRooms()[i].roomIndex() + " " + currentRoomIndex);
                         if(self.usersRepository()[currentUserIndex].userRooms()[i].roomIndex() == currentRoomIndex) {
@@ -56,6 +57,27 @@ define(["../jquery", "../knockout-3.3.0", "VM/userViewModel", "../services/userS
                     return false;
 
             };
+
+            /*self.isCurrentUserRoom = function(currentRoomIndex, currentUserIndex,isCurrentUserRoom ) {
+                var newUserObject = new UserViewModel({id: ''});
+
+                newUserObject.addUserRoom(newUserObject, function () {
+                    if(currentRoomIndex === '' || currentUserIndex === '') {
+                        isCurrentUserRoom(false);
+                    }
+                    if(currentRoomIndex && currentUserIndex) {}
+                    for(var i = 0; i < self.usersRepository()[currentUserIndex].userRooms().length; i++) {
+                        if(self.usersRepository()[currentUserIndex].userRooms()[i].roomIndex() == currentRoomIndex) {
+                            isCurrentUserRoom(true);
+                        }
+                    }
+                    isCurrentUserRoom(false);
+                }, function () {
+
+                });
+                alert(isCurrentUserRoom);
+                return false;
+            };*/
 
 
 

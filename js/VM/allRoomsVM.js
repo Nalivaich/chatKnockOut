@@ -10,16 +10,18 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
 
             self.roomsRepository = ko.observableArray([]);
 
-            self.add = function(name, createrID, privateFlag) {
+            self.add = function(name, createrID, privateFlag, nextfunction) {
                 var newRoomObject = new roomViewModel({
                     name: name,
                     createrId: createrID,
                     id: self.roomsRepository().length,
                     privateFlag: privateFlag
                 });
+
                 newRoomObject.usersIDInRoom.push({userIndex: ko.observable(createrID)});
                 newRoomObject.add(newRoomObject, function () {
                     self.roomsRepository.push(newRoomObject);
+                    nextfunction();
                     return true;
                 }, function () {
 
@@ -28,10 +30,12 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
                 return (self.roomsRepository().length);
             };
 
-            self.remove = function(currentRoomIndex) {
+            self.remove = function(currentRoomIndex, nextfunction) {
                 var newRoomObject = new roomViewModel({id:''});
+
                 newRoomObject.remove(newRoomObject, function () {
                     self.roomsRepository.splice(currentRoomIndex, 1);
+                    nextfunction();
                     return true;
                 }, function () {
 
@@ -41,18 +45,35 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
             };
 
             self.addUserInRoom = function(userIndex, currentRoomIndex) {
-                //alert(self.roomsRepository()[currentRoomIndex].usersIDInRoom().length);
-                for(var i = 0; i < self.roomsRepository()[currentRoomIndex].usersIDInRoom().length; i++) {
-                    if(self.roomsRepository()[currentRoomIndex].usersIDInRoom()[i].userIndex() == userIndex) {
-                        return false;
+                var newRoomObject = new roomViewModel({id:''});
+
+                newRoomObject.remove(newRoomObject, function () {
+                    for(var i = 0; i < self.roomsRepository()[currentRoomIndex].usersIDInRoom().length; i++) {
+                        if(self.roomsRepository()[currentRoomIndex].usersIDInRoom()[i].userIndex() == userIndex) {
+                            return false;
+                        }
                     }
-                }
-                self.roomsRepository()[currentRoomIndex].usersIDInRoom.push({userIndex: ko.observable(userIndex)});
-                //alert(self.roomsRepository()[currentRoomIndex].usersIDInRoom()[0].userIndex());
+                    self.roomsRepository()[currentRoomIndex].usersIDInRoom.push({userIndex: ko.observable(userIndex)});
+                    nextfunction();
+                    return true;
+                }, function () {
+
+                });
             };
 
 
-
+            var privateFlag = [
+                true,
+                false,
+                true,
+                false,
+                true,
+                false,
+                true,
+                false,
+                true,
+                false
+            ];
 
             var roomNames = [
                 'My Best Room',
@@ -72,12 +93,13 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
                 newArray.push({userIndex: ko.observable(giveMeRandomValue(0,5))});
                 var randomValue = giveMeRandomValue(0,9);
                 name = roomNames[randomValue];
-                idCreater = createrId || 1;
+                idCreater = createrId || giveMeRandomValue(0,5);
                 var newRoomObject = new roomViewModel({
                     name: name,
                     createrId: idCreater,
                     id: self.roomsRepository().length,
-                    usersIDInRoom: newArray
+                    usersIDInRoom: newArray,
+                    privateFlag: privateFlag[giveMeRandomValue(0,9)]
                 });
                 self.roomsRepository.push(newRoomObject);
 

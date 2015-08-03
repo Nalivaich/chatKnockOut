@@ -10,8 +10,6 @@
     <script src="bootstrap-3.3.5-dist/js/bootstrap.min.js" type="text/javascript"></script>
     <script data-main="js/AppViewModel" src="js/require.js"></script>
 
-
-
 </head>
 <body>
 
@@ -129,16 +127,16 @@
 
 
 <script id="roomTemplate" type="text/html">
-    <li class="bg-info row col-md-12 col-md-offset-0 text-success myCursor" data-bind="click: function(){$parent.changeCurrentRoom(id())}">
+    <li class="bg-info row col-md-12 col-md-offset-0 text-success myCursor listDecoration" data-bind="click: function(){$parent.changeCurrentRoom(id())}">
         <p><span class="glyphicon glyphicon-comment"></span></p>
         <p>Room name: <span data-bind="text: name "></span></p>
         <p>Private: <span data-bind="text: privateFlag"></span></p>
-        <p>Number of Users: <span data-bind="text: usersIDInRoom().length + 1 "></span></p>
+        <p>Number of Users: <span data-bind="text: usersIDInRoom().length  "></span></p>
     </li>
 </script>
 
 <script id="usersTemplate" type="text/html" >
-    <li class=" bg-success row col-md-12 col-md-offset-0 text-success myCursor" data-bind="click: function(){$parent.showFunc(fullName, id, lastName)}">
+    <li class=" bg-success row col-md-12 col-md-offset-0 text-success myCursor listDecoration" data-bind="click: function(){$parent.showFunc(fullName, id, lastName)}">
         <p><span class="glyphicon glyphicon-user"></span></p>
         <p>User: <span data-bind="text: fullName"></span></p>
         <p>User ID:  <span data-bind="text: id"></span></p>

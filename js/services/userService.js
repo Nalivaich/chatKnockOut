@@ -16,7 +16,7 @@ define(["../jquery"],function($) {
                             onError();
                         }*/
                         onSuccess();
-                    }, Math.random() * 3000 + 1000);
+                    }, Math.random() * 1000 + 1000);
             };
 
 
@@ -27,7 +27,15 @@ define(["../jquery"],function($) {
 
                         onSuccess();
                     }, Math.random() * 1000 + 1000);
+            };
+
+            self.isCurrentUserRoom = function(onSuccess, onError) {
+                window.setTimeout(
+                    function() {
+                    }, Math.random() * 1000 + 1000);
             }
+
+
         }
         return new UserService();
     }

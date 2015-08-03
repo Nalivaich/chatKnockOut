@@ -12,7 +12,7 @@ define(["../jquery"],function($) {
                 window.setTimeout(
                     function() {
                         onSuccess();
-                    }, Math.random() * 3000 + 1000);
+                    }, Math.random() * 1000 + 1000);
             };
 
 
@@ -20,8 +20,16 @@ define(["../jquery"],function($) {
                 window.setTimeout(
                     function() {
                         onSuccess();
-                    }, Math.random() * 3000 + 1000);
-            }
+                    }, Math.random() * 1000 + 1000);
+            };
+
+
+            self.addUserInRoom = function(onSuccess, onError) {
+                window.setTimeout(
+                    function() {
+                        onSuccess();
+                    }, Math.random() * 1000 + 1000);
+            };
         }
         return new RoomService();
     }

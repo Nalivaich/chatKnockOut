@@ -31,6 +31,12 @@ define(["../jquery", "../knockout-3.3.0", "services/roomService"],function($, ko
                 }, onError , userObject))
             };
 
+            self.addUserInRoom = function(userObject,onSuccess, onError) {
+                return(roomService.remove(function () {
+                    onSuccess();
+                }, onError , userObject))
+            };
+
 
 
 

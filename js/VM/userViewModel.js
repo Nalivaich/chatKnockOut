@@ -34,7 +34,14 @@ define(["../jquery", "../knockout-3.3.0", "../services/userService"],function($,
                 }, onError , userObject))
             };
 
-            function doSmth () {
+            self.isCurrentUserRoom = function(userObject,onSuccess, onError) {
+                return(userService.isCurrentUserRoom(function () {
+                    doSmth();
+                    onSuccess();
+                }, onError , userObject))
+            };
+
+            function doSmth() {
 
             }
 
