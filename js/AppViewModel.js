@@ -51,9 +51,9 @@
 
          };
 
-         self.addUserInRoom = function(userIndex) {
+         self.addUserToRoom = function(userIndex) {
 
-             allRoomsVM.addUserInRoom(userIndex, self.currentRoomIndex());
+             allRoomsVM.addUserToRoom(userIndex, self.currentRoomIndex());
          };
 
 
@@ -95,7 +95,7 @@
              }
              self.currentRoomIndex(newCurrentRoomId);
              self.roomCreaterFlag(allUsersVM.isCurrentUserRoom(self.currentRoomIndex(), self.currentUserIndex()));
-             self.addUserInRoom(self.currentUserIndex());
+             self.addUserToRoom(self.currentUserIndex());
              self.activeRoomFlag(true);
 
          };

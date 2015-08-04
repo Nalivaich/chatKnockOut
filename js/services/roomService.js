@@ -6,106 +6,105 @@
 define(["../jquery", "VM/roomViewModel"],function($,  RoomViewModel ){
             'use strict';
 
-            var self = {};
-            self.roomsRepository = [];
-            self.add = function(odject, onSuccess, onError) {
-                window.setTimeout(
-                    function() {
-                        onSuccess();
-                    }, Math.random() * 1000 + 1000);
-            };
+        var self = {};
 
+        var rooms = [];
 
-            self.remove = function(odject, onSuccess, onError) {
-                window.setTimeout(
-                    function() {
-                        onSuccess();
-                    }, Math.random() * 1000 + 1000);
-            };
+        function asyncImitation(callback) {
+            window.setTimeout(callback, Math.random() * 1000 + 1000);
+        }
 
+        function getNewId() {
+            var lastItem = rooms[rooms.length - 1] || { id: 0 };
 
-            self.addUserInRoom = function(odject,onSuccess, onError) {
-                window.setTimeout(
-                    function() {
-                        onSuccess();
-                    }, Math.random() * 1000 + 1000);
-            };
+            return lastItem.id + 1;
+        }
 
-            self.getAll = function(onSuccess, onError) {
-                window.setTimeout(
-                    function() {
-                        onSuccess();
-
-                    }, Math.random() * 1000 + 1000);
-                return self.roomsRepository;
-            };
-
-            self.addMessage = function(object, onSuccess, onError) {
-                window.setTimeout(
-                    function() {
-                        onSuccess();
-
-                    }, Math.random() * 1000 + 1000);
-                return self.roomsRepository;
-            };
-
-
-
-        var privateFlag = [
-            true,
-            false,
-            true,
-            false,
-            true,
-            false,
-            true,
-            false,
-            true,
-            false
-        ];
-
-        var roomNames = [
-            'My Best Room',
-            'Only men)',
-            'bookworms',
-            'Gough died',
-            'hitch-hiking',
-            'fishing',
-            'hunting',
-            'fishing & hunting',
-            'like a boss now',
-            'news'
-        ];
-
-
-        self.generateRooms = function(createrId) {
-            var name, idCreater;
-            var newArray = [];
-            newArray.push({userIndex: giveMeRandomValue(0,5)});
-            var randomValue = giveMeRandomValue(0,9);
-            name = roomNames[randomValue];
-            idCreater = createrId || giveMeRandomValue(0,5);
-            var newRoom = new RoomViewModel({
-                name: name,
-                createrId: idCreater,
-                id: self.roomsRepository.length,
-                usersIDInRoom: newArray,
-                privateFlag: privateFlag[giveMeRandomValue(0,9)]
+        self.add = function(room, onSuccess, onError) {
+            asyncImitation(function() {
+                room.id = getNewId();
+                alert(room.id );
+                rooms.push(room);
+                onSuccess(room);
             });
-            return newRoom;
-
         };
 
-        self.pushGeneratedRoom = function(createrId) {
-            for(var i = 0; i < 5; i++) {
-                var newRoomObject = self.generateRooms(i);
-                self.roomsRepository.push(newRoomObject);
-            }
-        }();
 
-        function giveMeRandomValue(min , max) {
+        self.remove = function(room, onSuccess, onError) {
+            asyncImitation(function() {
+                rooms = $.grep(rooms, function (item) {
+                    return item.id !== room.id;
+                });
+
+                onSuccess();
+            });
+        };
+
+
+
+        self.addUserToRoom = function(user, room, onSuccess, onError) {
+            asyncImitation(function() {
+                var foundItem = $.grep(rooms, function (item) {
+                    return item.id === room.id;
+                })[0];
+
+                if (foundItem) {
+                    foundItem.usersIDInRoom.push(user);
+                }
+                onSuccess();
+            });
+        };
+
+
+        self.getAll = function(onSuccess, onError) {
+            asyncImitation(function() {
+                onSuccess(rooms);
+            });
+        };
+
+        self.addMessage = function(object, onSuccess, onError) {
+                window.setTimeout(
+                    function() {
+                        onSuccess();
+
+                    }, Math.random() * 1000 + 1000);
+                return self.roomsRepository;
+            };
+
+
+        function getRandomValue(min , max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
+
+
+
+        (function prepopulate(repeats) {
+            var roomTemplate = {
+                name: [ 'My Best Room', 'Only men)', 'bookworms', 'Gough died', 'hitch-hiking', 'fishing', 'hunting', 'fishing & hunting', 'like a boss now', 'news' ],
+                privateFlag: [  true, false, true, false, true, false, true, false, true, false ]
+            };
+
+            function generateRoom() {
+                var generatedRoom = {
+                    id: getNewId(),
+                    createrId: getRandomValue(0, 5),
+                    usersIDInRoom: [
+                        { userIndex: getRandomValue(0, 5) }
+                    ]
+                };
+
+                $.each(roomTemplate, function (prop, value) {
+                    generatedRoom[prop] = value[getRandomValue(0, value.length - 1)];
+                });
+
+                return generatedRoom;
+            }
+
+            while (repeats--) {
+                console.log(generateRoom().id);
+                rooms.push(generateRoom());
+            }
+        })(7);
 
 
         return self;

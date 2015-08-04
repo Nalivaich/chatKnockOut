@@ -119,7 +119,7 @@
             <div class="modal-body">
                 <p class="text-success" data-bind="$parent.name">Please choose user to add in your room </p>
                 <div data-bind="foreach: usersRepository" data-dismiss="modal" class="myCursor">
-                    <p data-bind=" text: fullName, click: function() {$parent.addUserInRoom(id())}" class="text-primary alignClass"></p>
+                    <p data-bind=" text: fullName, click: function() {$parent.addUserToRoom(id())}" class="text-primary alignClass"></p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -150,9 +150,9 @@
 
 
 <script id="messageTemplate" type="text/html">
-    <li class="row col-md-11 col-md-offset-1 text-success" >
-        <p ><span data-bind="text: message"></span></p>
-        <p><span data-bind="text: currentUserIndex()"></span></p>
+    <li class="row col-md-11 col-md-offset-1 text-success" data-bind="">
+        <p><span data-bind="text: message"></span></p>
+        <!--<p><span data-bind="text: userId"></span></p>-->
     </li>
 </script>
 

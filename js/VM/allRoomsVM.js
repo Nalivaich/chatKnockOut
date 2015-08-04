@@ -10,7 +10,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
 
             self.roomsRepository = ko.observableArray([]);
 
-            self.getAll= function(name, createrID, privateFlag, nextfunction) {
+            /*self.getAll= function(name, createrID, privateFlag, nextfunction) {
 
                 var roomObjectsArray = roomService.getAll( function () {
                     //nextfunction();
@@ -19,12 +19,24 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
                     return false;
                 });
                 for(var i = 0; i < roomObjectsArray.length; i++) {
-                    roomObjectsArray[i].usersIDInRoom = (makePropObservable(roomObjectsArray[i].usersIDInRoom(), 'usersIDInRoom'));
-                    roomObjectsArray[i].messagesHistory = (makePropObservable(roomObjectsArray[i].messagesHistory(), 'messagesHistory'));
+
                     self.roomsRepository.push(roomObjectsArray[i]);
                 }
+            }();
+*/
+            self.getAll = function getAll() {
+                roomService.getAll(function(receivedRooms) {
+                    $.each(receivedRooms, function(index, receivedRoom) {
+                        self.roomsRepository.push(new RoomViewModel(receivedRoom));
+                    })
+                }, function() {
+                    console.log('can\'t receive rooms');
+                });
+
 
             }();
+
+
 
 
             function makePropObservable(array, prop) {
@@ -49,57 +61,73 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
 
 
             self.add = function(name, createrID, privateFlag, nextfunction) {
-                var newRoomObject = new RoomViewModel({
+                roomService.add({
                     name: name,
-                    createrId: createrID,
-                    id: self.roomsRepository().length,
-                    privateFlag: privateFlag
-                });
 
-                newRoomObject.usersIDInRoom.push({userIndex: ko.observable(createrID)});
-                roomService.add(newRoomObject, function () {
-                    self.roomsRepository.push(newRoomObject);
+                    createrId: createrID,
+                    privateFlag: privateFlag,
+                    usersIDInRoom: [{
+                        userIndex: createrID
+                    }]
+                }, function(room) {
+                    var newRoom = new RoomViewModel(room);
+                    self.roomsRepository.push(newRoom);
                     nextfunction();
                     return true;
-                }, function () {
+                }, function() {
                     return false;
                 });
 
-
                 return (self.roomsRepository().length);
             };
 
-            self.remove = function(currentRoomIndex, nextFunction) {
-                var newRoomObject = new RoomViewModel({id:''});
 
-                roomService.remove(newRoomObject, function () {
+            self.remove = function(currentRoomIndex, nextFunction) {
+                roomService.remove({
+                    id: ''
+                }, function() {
                     self.roomsRepository.splice(currentRoomIndex, 1);
                     nextFunction();
                     return true;
-                }, function () {
+                }, function() {
 
                 });
 
                 return (self.roomsRepository().length);
             };
 
-            self.addUserInRoom = function(userIndex, currentRoomIndex, nextfunction) {
-                var newRoomObject = new RoomViewModel({id:''});
+            self.addUserToRoom = function(userIndex, currentRoomIndex, nextfunction) {
+                roomService.addUserToRoom({
+                    userIndex: userIndex
+                }, {
+                    id: currentRoomIndex
+                }, function() {
 
-                roomService.addUserInRoom(newRoomObject, function () {
-                    for(var i = 0; i < self.roomsRepository()[currentRoomIndex].usersIDInRoom().length; i++) {
-                        if(self.roomsRepository()[currentRoomIndex].usersIDInRoom()[i].userIndex() == userIndex) {
-                            return false;
-                        }
+                    var observableRoom = $.grep(self.roomsRepository(), function(item) {
+                        console.log(item + item.id);
+                        return item.id() == currentRoomIndex;
+                    })[0];
+
+                    if (!observableRoom) {
+                        return;
                     }
-                    self.roomsRepository()[currentRoomIndex].usersIDInRoom.push({userIndex: ko.observable(userIndex)});
-                    nextfunction();
-                    return true;
-                }, function () {
+
+                    var foundUserInRoom = $.grep(observableRoom.usersIDInRoom(), function (userItem) {
+                        console.log( userItem.index + " " + userIndex);
+                        return userItem.userIndex === userIndex;
+                    });
+
+                    if (!foundUserInRoom.length) {
+                        console.log(self.roomsRepository()[currentRoomIndex]);
+                        self.roomsRepository()[currentRoomIndex].usersIDInRoom.push({
+                            userIndex: ko.observable(userIndex)
+                        });
+
+                    }
+                }, function() {
 
                 });
             };
-
 
             self.isUserInRoom = function(userIndex, currentRoomIndex, nextFunction) {
 
