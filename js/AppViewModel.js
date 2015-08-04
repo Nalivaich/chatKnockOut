@@ -33,14 +33,10 @@
 
 
         self.createRoom = function() {
-             //create new room
             self.currentRoomIndex(allRoomsVM.add(self.newRoomName(), self.currentUserIndex(), self.privateFlag(), function() {
-                //if(self.currentUserIndex()) {
                     allUsersVM.addUserRoom(self.currentUserIndex(), self.currentRoomIndex(), function() {
                         self.roomCreaterFlag(allUsersVM.isCurrentUserRoom(self.currentRoomIndex() , self.currentUserIndex()));
-                        //self.addUserInRoom(self.currentUserIndex());
                         self.activeRoomFlag(true);
-                        //self.roomCreaterFlag(true);
                         self.newRoomName('');
                     });
             }));
@@ -68,7 +64,6 @@
 
          self.readUserInfo = function() {
              self.currentUserIndex(allUsersVM.add(self.currentUserName(), self.currentUserPassword()));
-             //UsersRepository.addUserInRepository(self.currentUserObject);
              self.authorizationFlag(true);
              //alert(self.roomsRepository()[self.currentRoomIndex()].name()); //!!!!!!!!!!!!!!!!!!!!
          };
@@ -80,10 +75,13 @@
                message: self.currentMessage()
            });
 
-             self.roomsRepository()[self.currentRoomIndex()].messagesHistory.push({message: ko.observable(self.currentUserName() + " Say: " + self.currentMessage())});
-             self.currentMessage('');
-             //alert(self.roomsRepository()[self.currentRoomIndex()].messagesHistory()[0].message());
+           allRoomsVM.addMessage({
+               currentRoomIndex: self.currentRoomIndex(),
+               message: ko.observable(self.currentUserName() + " Say: " + self.currentMessage()),
+               userId: ko.observable(self.currentUserIndex())
+           });
 
+           self.currentMessage('');
          };
 
          self.changeCurrentRoom = function(newCurrentRoomId, currentPrivateFlag) {
@@ -99,7 +97,6 @@
              self.roomCreaterFlag(allUsersVM.isCurrentUserRoom(self.currentRoomIndex(), self.currentUserIndex()));
              self.addUserInRoom(self.currentUserIndex());
              self.activeRoomFlag(true);
-
 
          };
 

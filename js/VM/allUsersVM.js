@@ -16,7 +16,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/userViewModel", "../services/userS
                     password: password,
                     id: self.usersRepository().length
                 });
-                newUserObject.add(newUserObject, function () {
+                userService.add(newUserObject, function () {
                     self.usersRepository.push(newUserObject);
                     return true;
                 }, function () {
@@ -27,7 +27,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/userViewModel", "../services/userS
 
             self.addUserRoom = function(userIndex, roomIndex, nextFunction) {
                 var newUserObject = new UserViewModel({id: ''});
-                newUserObject.addUserRoom(newUserObject, function () {
+                userService.addUserRoom(newUserObject, function () {
                     self.usersRepository()[userIndex].userRooms.push({roomIndex: ko.observable(roomIndex)});
                     nextFunction();
                     return true;

@@ -39,7 +39,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
 
                     case 'messagesHistory': {
                         for(var j = 0; j < array.length; j++) {
-                            newArray.push({message: ko.observable(array[j].message)});
+                            newArray.push({message: ko.observable(array[j].message), userId: ko.observable(array[j].userId)});
                         }
                         return newArray;
                     }
@@ -83,7 +83,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
                 return (self.roomsRepository().length);
             };
 
-            self.addUserInRoom = function(userIndex, currentRoomIndex) {
+            self.addUserInRoom = function(userIndex, currentRoomIndex, nextfunction) {
                 var newRoomObject = new RoomViewModel({id:''});
 
                 roomService.addUserInRoom(newRoomObject, function () {
@@ -112,6 +112,18 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
                     }
                 }
                 return false;
+            };
+
+
+            self.addMessage = function(object) {
+
+                roomService.addMessage(object, function () {
+                    self.roomsRepository()[object.currentRoomIndex].messagesHistory.push({message: object.message, userId: object.userId });
+                    //nextfunction();
+                    return true;
+                }, function () {
+
+                });
             };
 
 

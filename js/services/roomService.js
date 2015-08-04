@@ -40,6 +40,15 @@ define(["../jquery", "VM/roomViewModel"],function($,  RoomViewModel ){
                 return self.roomsRepository;
             };
 
+            self.addMessage = function(object, onSuccess, onError) {
+                window.setTimeout(
+                    function() {
+                        onSuccess();
+
+                    }, Math.random() * 1000 + 1000);
+                return self.roomsRepository;
+            };
+
 
 
         var privateFlag = [

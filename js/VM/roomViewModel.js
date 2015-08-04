@@ -9,6 +9,8 @@ define(["../jquery", "../knockout-3.3.0"],function($, ko) {
 
             var self = this;
 
+            
+
             self.id = ko.observable( data.id || '');
             self.createrId = ko.observable(data.createrId || 0);
             self.name = ko.observable(data.name || '');

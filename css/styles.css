@@ -149,3 +149,7 @@ h2 {
 .listDecoration {
     list-style: none;
 }
+
+.alighRight {
+    text-align: right;
+}
