@@ -4,19 +4,19 @@
 
 
 define(["../jquery"],function($) {
-        function MessageService() {
             'use strict';
 
-            var self = this;
-            self.add = function(onSuccess, onError) {
+            var self = {};
+            self.add = function(onSuccess, onError, object) {
                 window.setTimeout(
                     function() {
                         onSuccess();
                     }, Math.random() * 3000 + 1000);
-            }
+            };
+        return self;
         }
-        return new MessageService();
-    }
+
+
 );
 
 

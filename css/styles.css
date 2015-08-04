@@ -47,13 +47,23 @@ h2 {
     background-color: #ffffff;
     margin: 0 0 25px 0;
 }
+.usersInRoom {
+    height: 100px;
+    opacity: 0.5;
+    background-color: #ffffff;
+    padding: 10px 0 0 10px;
+}
 
 .sendMessageArea {
     width: 100%;
-    height: 200px;
+    height: 100px;
     opacity: 0.5;
+
 }
 
+.roomControl{
+    background-color: #204d74;
+}
 
 .roomList {
     float: right;

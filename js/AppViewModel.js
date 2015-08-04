@@ -42,9 +42,11 @@
          };
 
          self.removeRoom = function() {
-             self.currentRoomIndex(allRoomsVM.remove(self.currentRoomIndex()));
-             self.activeRoomFlag(false);
-             //self.roomCreaterFlag(false);
+             self.currentRoomIndex(allRoomsVM.remove(self.currentRoomIndex(), function() {
+                 self.roomCreaterFlag(allUsersVM.isCurrentUserRoom(self.currentRoomIndex(), self.currentUserIndex()));
+                 self.activeRoomFlag(false);
+             }));
+
          };
 
          self.addUserInRoom = function(userIndex) {
@@ -82,6 +84,7 @@
              if(self.currentUserIndex() == '' || self.currentUserIndex() == undefined) {
                  return false;
              }
+
              if(currentPrivateFlag && !(allRoomsVM.isUserInRoom(self.currentUserIndex(),newCurrentRoomId))){
                  alert("access denied");
                  return false;
@@ -97,7 +100,7 @@
 
          //add users/rooms
          useMethodNTimes(6,allUsersVM.pushGeneratedUser);
-         useMethodNTimes(6,allRoomsVM.pushGeneratedRoom);
+         //useMethodNTimes(6,allRoomsVM.pushGeneratedRoom);
 
          function useMethodNTimes(N, method) {
              for(var i = 0; i < N;i++ ) {

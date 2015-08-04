@@ -45,16 +45,18 @@
             </ul>
         </div>
         <div class="col-md-8 sectionCols ">
-            <div class="allMessageArea addScroll" data-bind="with: roomsRepository()[currentRoomIndex()]">
+            <div class="usersInRoom" data-bind="with: roomsRepository()[currentRoomIndex()]">
                 <p>You are in a room: <span data-bind="text: name"></span></p>
                 <span>Curent Users: </span>
                 <div data-bind="foreach: usersIDInRoom" class="text-danger">
                     <span data-bind="text: $root.usersRepository()[userIndex()].fullName "></span><span>, </span>
                 </div>
+            </div>
+            <div class="allMessageArea addScroll" data-bind="with: roomsRepository()[currentRoomIndex()]">
                 <ul class="usersList" data-bind="template: {name: 'messageTemplate', foreach: messagesHistory}">
                 </ul>
             </div>
-            <div data-bind="css: ">
+            <div data-bind="css:{roomControl: authorizationFlag() == false} ">
             <textarea class="sendMessageArea" data-bind="textInput: currentMessage, enable: activeRoomFlag">
                 Input your text
             </textarea>
@@ -128,7 +130,7 @@
 
 
 <script id="roomTemplate" type="text/html">
-    <li class="bg-info row col-md-12 col-md-offset-0 text-success myCursor listDecoration" data-bind="click: function(){$parent.changeCurrentRoom(id())}">
+    <li class="bg-info row col-md-12 col-md-offset-0 text-success myCursor listDecoration" data-bind="click: function(){$parent.changeCurrentRoom(id(), privateFlag())}">
         <p><span class="glyphicon glyphicon-comment"></span></p>
         <p>Room name: <span data-bind="text: name "></span></p>
         <p>Private: <span data-bind="text: privateFlag"></span></p>

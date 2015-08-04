@@ -3,7 +3,7 @@
  */
 
 
-define(["../jquery", "../knockout-3.3.0", "services/roomService"],function($, ko, roomService) {
+define(["../jquery", "../knockout-3.3.0"],function($, ko) {
         function RoomViewModel(data) {
             'use strict';
 
@@ -16,31 +16,6 @@ define(["../jquery", "../knockout-3.3.0", "services/roomService"],function($, ko
             self.usersIDInRoom = ko.observableArray(data.usersIDInRoom || []);
             self.messagesHistory = ko.observableArray([]);
             self.external = ko.observable(data.external || '');
-
-
-
-            self.add = function(userObject,onSuccess, onError) {
-                return(roomService.add(function () {
-                    onSuccess();
-                }, onError , userObject))
-            };
-
-            self.remove = function(userObject,onSuccess, onError) {
-                return(roomService.remove(function () {
-                    onSuccess();
-                }, onError , userObject))
-            };
-
-            self.addUserInRoom = function(userObject,onSuccess, onError) {
-                return(roomService.remove(function () {
-                    onSuccess();
-                }, onError , userObject))
-            };
-
-
-
-
-
         }
         return RoomViewModel;
     }

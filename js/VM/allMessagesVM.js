@@ -10,6 +10,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/messageViewModel", "../services/me
 
             self.messageRepository = ko.observableArray([]);
 
+
             self.add = function(data) {
                 var newMessageObject = new messageViewModel({
                     idRoom: data.idRoom,

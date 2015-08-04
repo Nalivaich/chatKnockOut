@@ -35,10 +35,6 @@ define(["../jquery", "../knockout-3.3.0", "VM/userViewModel", "../services/userS
 
                 });
 
-
-
-                //self.usersRepository()[userIndex].userRooms.push({roomIndex: ko.observable(roomIndex)});
-                //alert(self.usersRepository()[userIndex].userRooms()[0].roomIndex());
             };
 
             self.isCurrentUserRoom = function(currentRoomIndex, currentUserIndex) {

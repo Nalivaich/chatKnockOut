@@ -10,6 +10,44 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
 
             self.roomsRepository = ko.observableArray([]);
 
+            self.getAll= function(name, createrID, privateFlag, nextfunction) {
+
+                var roomObjectsArray = roomService.getAll( function () {
+                    //nextfunction();
+                    return true;
+                }, function () {
+                    return false;
+                });
+                for(var i = 0; i < roomObjectsArray.length; i++) {
+                    roomObjectsArray[i].usersIDInRoom = (makePropObservable(roomObjectsArray[i].usersIDInRoom(), 'usersIDInRoom'));
+                    roomObjectsArray[i].messagesHistory = (makePropObservable(roomObjectsArray[i].messagesHistory(), 'messagesHistory'));
+                    self.roomsRepository.push(roomObjectsArray[i]);
+                }
+
+            }();
+
+
+            function makePropObservable(array, prop) {
+                var newArray = ko.observableArray([]);
+                switch(prop){
+                    case 'usersIDInRoom' :{
+                        for(var i = 0; i < array.length; i++) {
+                            newArray.push({userIndex: ko.observable(array[i].userIndex)});
+                        }
+                        return newArray;
+                    }
+
+                    case 'messagesHistory': {
+                        for(var j = 0; j < array.length; j++) {
+                            newArray.push({message: ko.observable(array[j].message)});
+                        }
+                        return newArray;
+                    }
+
+                }
+            }
+
+
             self.add = function(name, createrID, privateFlag, nextfunction) {
                 var newRoomObject = new RoomViewModel({
                     name: name,
@@ -19,13 +57,14 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
                 });
 
                 newRoomObject.usersIDInRoom.push({userIndex: ko.observable(createrID)});
-                newRoomObject.add(newRoomObject, function () {
+                roomService.add(newRoomObject, function () {
                     self.roomsRepository.push(newRoomObject);
                     nextfunction();
                     return true;
                 }, function () {
-
+                    return false;
                 });
+
 
                 return (self.roomsRepository().length);
             };
@@ -33,7 +72,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
             self.remove = function(currentRoomIndex, nextFunction) {
                 var newRoomObject = new RoomViewModel({id:''});
 
-                newRoomObject.remove(newRoomObject, function () {
+                roomService.remove(newRoomObject, function () {
                     self.roomsRepository.splice(currentRoomIndex, 1);
                     nextFunction();
                     return true;
@@ -47,7 +86,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
             self.addUserInRoom = function(userIndex, currentRoomIndex) {
                 var newRoomObject = new RoomViewModel({id:''});
 
-                newRoomObject.remove(newRoomObject, function () {
+                roomService.addUserInRoom(newRoomObject, function () {
                     for(var i = 0; i < self.roomsRepository()[currentRoomIndex].usersIDInRoom().length; i++) {
                         if(self.roomsRepository()[currentRoomIndex].usersIDInRoom()[i].userIndex() == userIndex) {
                             return false;
@@ -76,7 +115,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
             };
 
 
-            var privateFlag = [
+           /* var privateFlag = [
                 true,
                 false,
                 true,
@@ -122,7 +161,7 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
             function giveMeRandomValue(min , max) {
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
-
+*/
         }
         return new RoomsViewModel();
     }
