@@ -19,8 +19,14 @@
          self.roomCreaterFlag =  ko.observable(false);
          self.authorizationFlag = ko.observable(false);
          self.addOrRemove  = ko.observable(false);
-         /*self.currentUserObject = new UsersRepository.UserConstructor();
-         self.authorizationVisible = true;*/
+
+         self.currentRoom = ko.pureComputed(function() {
+             return self.roomsRepository()[self.currentRoomIndex()]
+         }, self);
+         self.currentUser = ko.pureComputed(function() {
+             return self.usersRepository()[self.currentUserIndex()]
+         }, self);
+
 
          self.usersRepository = allUsersVM.usersRepository;
          self.roomsRepository = allRoomsVM.roomsRepository;

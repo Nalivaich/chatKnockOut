@@ -9,6 +9,7 @@
     <script type="text/javascript" src="js/jquery.js"></script>
     <script src="bootstrap-3.3.5-dist/js/bootstrap.min.js" type="text/javascript"></script>
     <script data-main="js/AppViewModel" src="js/require.js"></script>
+    <script type="text/javascript" src="templates/exampleTemplate.js"></script>
 
 </head>
 <body>
@@ -45,14 +46,14 @@
             </ul>
         </div>
         <div class="col-md-8 sectionCols ">
-            <div class="usersInRoom" data-bind="with: roomsRepository()[currentRoomIndex()]">
+            <div class="usersInRoom" data-bind="with: currentRoom">
                 <p>You are in a room: <span data-bind="text: name"></span></p>
                 <span>Curent Users: </span>
                 <div data-bind="foreach: usersIDInRoom" class="text-danger">
                     <span data-bind="text: $root.usersRepository()[userIndex()].fullName "></span><span>, </span>
                 </div>
             </div>
-            <div class="allMessageArea addScroll" data-bind="with: roomsRepository()[currentRoomIndex()]">
+            <div class="allMessageArea addScroll" data-bind="with: currentRoom">
                 <ul class="usersList" data-bind="template: {name: 'messageTemplate', foreach: messagesHistory}">
                 </ul>
             </div>
