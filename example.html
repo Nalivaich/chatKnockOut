@@ -46,11 +46,11 @@
             </ul>
         </div>
         <div class="col-md-8 sectionCols ">
-            <div class="usersInRoom" data-bind="with: currentRoom">
+            <div class="usersInRoom" data-bind="with: currentRoom()">
                 <p>You are in a room: <span data-bind="text: name"></span></p>
                 <span>Curent Users: </span>
                 <div data-bind="foreach: usersIDInRoom" class="text-danger">
-                    <span data-bind="text: $root.usersRepository()[userIndex()].fullName "></span><span>, </span>
+                    <span data-bind="text: $root.findFullName(userIndex())"></span><span>, </span>
                 </div>
             </div>
             <div class="allMessageArea addScroll" data-bind="with: currentRoom">
@@ -135,12 +135,13 @@
         <p><span class="glyphicon glyphicon-comment"></span></p>
         <p>Room name: <span data-bind="text: name "></span></p>
         <p>Private: <span data-bind="text: privateFlag"></span></p>
+        <p>Id: <span data-bind="text: id"></span></p>
         <p>Number of Users: <span data-bind="text: usersIDInRoom().length  "></span></p>
     </li>
 </script>
 
 <script id="usersTemplate" type="text/html" >
-    <li class=" bg-success row col-md-12 col-md-offset-0 text-success myCursor listDecoration" data-bind="click: function(){$parent.showFunc(fullName, id, lastName)}">
+    <li class=" bg-success row col-md-12 col-md-offset-0 text-success myCursor listDecoration" data-bind="click: function(){$parent.showFullName(fullName, id, lastName)}">
         <p><span class="glyphicon glyphicon-user"></span></p>
         <p>User: <span data-bind="text: fullName"></span></p>
         <p>User ID:  <span data-bind="text: id"></span></p>

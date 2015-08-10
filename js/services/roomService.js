@@ -23,12 +23,11 @@ define(["../jquery", "VM/roomViewModel"],function($,  RoomViewModel ){
         self.add = function(room, onSuccess, onError) {
             asyncImitation(function() {
                 room.id = getNewId();
-                alert(room.id );
+                room.messagesHistory = [];
                 rooms.push(room);
                 onSuccess(room);
             });
         };
-
 
         self.remove = function(room, onSuccess, onError) {
             asyncImitation(function() {
@@ -40,21 +39,24 @@ define(["../jquery", "VM/roomViewModel"],function($,  RoomViewModel ){
             });
         };
 
-
-
         self.addUserToRoom = function(user, room, onSuccess, onError) {
             asyncImitation(function() {
+
                 var foundItem = $.grep(rooms, function (item) {
                     return item.id === room.id;
                 })[0];
 
-                if (foundItem) {
+                var foundUserInRoom = $.grep(foundItem.usersIDInRoom, function (userItem) {
+
+                    return userItem.userIndex === user.userIndex;
+                });
+
+                if (!foundUserInRoom.length) {
                     foundItem.usersIDInRoom.push(user);
                 }
                 onSuccess();
             });
         };
-
 
         self.getAll = function(onSuccess, onError) {
             asyncImitation(function() {
@@ -63,20 +65,20 @@ define(["../jquery", "VM/roomViewModel"],function($,  RoomViewModel ){
         };
 
         self.addMessage = function(object, onSuccess, onError) {
-                window.setTimeout(
-                    function() {
-                        onSuccess();
+            var observableRoom = $.grep(rooms, function(item) {
+                return item.id == object.currentRoomId;
+            })[0];
 
-                    }, Math.random() * 1000 + 1000);
-                return self.roomsRepository;
-            };
+            observableRoom.messagesHistory.push({message: object.message, userId: object.userId });
 
+            asyncImitation(function() {
+                onSuccess();
+            });
+        };
 
         function getRandomValue(min , max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
-
-
 
         (function prepopulate(repeats) {
             var roomTemplate = {
@@ -87,6 +89,7 @@ define(["../jquery", "VM/roomViewModel"],function($,  RoomViewModel ){
             function generateRoom() {
                 var generatedRoom = {
                     id: getNewId(),
+                    messagesHistory: [],
                     createrId: getRandomValue(0, 5),
                     usersIDInRoom: [
                         { userIndex: getRandomValue(0, 5) }
@@ -101,7 +104,6 @@ define(["../jquery", "VM/roomViewModel"],function($,  RoomViewModel ){
             }
 
             while (repeats--) {
-                console.log(generateRoom().id);
                 rooms.push(generateRoom());
             }
         })(7);

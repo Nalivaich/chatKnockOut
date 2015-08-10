@@ -8,17 +8,24 @@ define(["../jquery", "../knockout-3.3.0"],function($, ko) {
 
             var self = this;
 
-            self.id = ko.observable(data.id || 0);
-            self.name = ko.observable(data.name || '');
-            self.lastName = ko.observable(data.lastName || '');
-            self.password = ko.observable(data.password || '1111');
-            self.userRooms = ko.observableArray([ ]);
-            self.external = ko.observable(data.external || '');
+            data = $.extend({
+                name: '',
+                lastName: '',
+                password: 1111,
+                userRooms: [],
+                external: ''
+            }, data);
+
+            self.id = ko.observable( data.id );
+            self.name = ko.observable( data.name );
+            self.lastName = ko.observable( data.lastName );
+            self.password = ko.observable( data.password );
+            self.userRooms = ko.observableArray( data.userRooms );
+            self.external = ko.observable( data.external );
 
             self.fullName = ko.computed(function() {
                 return (self.name() + " " + self.lastName());
             });
-
         }
 
         return UserViewModel;

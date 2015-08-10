@@ -10,118 +10,78 @@ define(["../jquery", "../knockout-3.3.0", "VM/userViewModel", "../services/userS
 
             self.usersRepository = ko.observableArray([]);
 
-            self.add = function(name, password) {
-                var newUserObject = new UserViewModel({
-                    name: name,
-                    password: password,
-                    id: self.usersRepository().length
+            self.getAll = function getAll() {
+                userService.getAll(function(receivedUsers) {
+                    $.each(receivedUsers, function(index, receivedUser) {
+                        self.usersRepository.push(new UserViewModel(receivedUser));
+                    })
+                }, function() {
+                    console.log('can\'t receive users');
                 });
-                userService.add(newUserObject, function () {
-                    self.usersRepository.push(newUserObject);
+            }();
+
+            self.add = function(name, password, nextFunction) {
+                userService.add({
+                    name: name,
+                    password: password
+                }, function (newObject) {
+                    var newUser = new UserViewModel(newObject);
+                    self.usersRepository.push(newUser);
+                    nextFunction(newUser.id());
                     return true;
                 }, function () {
-
+                    console.log('can\'t add user');
                 });
-                return (self.usersRepository().length ); //неверно,, задержка все ломает
             };
 
-            self.addUserRoom = function(userIndex, roomIndex, nextFunction) {
-                var newUserObject = new UserViewModel({id: ''});
-                userService.addUserRoom(newUserObject, function () {
-                    self.usersRepository()[userIndex].userRooms.push({roomIndex: ko.observable(roomIndex)});
-                    nextFunction();
-                    return true;
+            self.addUserRoom = function(userId, roomId, nextFunction) {
+                userService.addUserRoom({
+                    userIndex: userId
+                }, {
+                    roomIndex: roomId
                 }, function () {
 
+                    var observableUser = $.grep(self.usersRepository(), function(item) {
+                        return item.id() === userId;
+                    })[0];
+
+                    observableUser.userRooms.push({
+                        roomIndex: ko.observable(roomId)
+                    });
+                    nextFunction();
+                }, function () {
+                    console.log('can\'t add user`s room');
                 });
 
             };
 
             self.isCurrentUserRoom = function(currentRoomIndex, currentUserIndex) {
-
                 if(currentRoomIndex === '' || currentUserIndex === '') {
                     return false;
                 }
 
-                if(currentRoomIndex && currentUserIndex) {}
-                //alert(self.usersRepository()[currentUserIndex].userRooms().length);
-                    for(var i = 0; i < self.usersRepository()[currentUserIndex].userRooms().length; i++) {
-                       // alert(self.usersRepository()[currentUserIndex].userRooms()[i].roomIndex() + " " + currentRoomIndex);
-                        if(self.usersRepository()[currentUserIndex].userRooms()[i].roomIndex() == currentRoomIndex) {
-                            return true;
-                        }
-                    }
+                var observableUser = $.grep(self.usersRepository(), function(item) {
+                    return item.id() === currentUserIndex;
+                })[0];
+
+                var foundUserInRoom = $.grep(observableUser.userRooms(), function (userItem, index) {
+                    return userItem.roomIndex === currentRoomIndex;
+                });
+
+                if (!foundUserInRoom.length) {
                     return false;
+                } else {
+                    return true;
+                }
 
             };
 
-            /*self.isCurrentUserRoom = function(currentRoomIndex, currentUserIndex,isCurrentUserRoom ) {
-                var newUserObject = new UserViewModel({id: ''});
-
-                newUserObject.addUserRoom(newUserObject, function () {
-                    if(currentRoomIndex === '' || currentUserIndex === '') {
-                        isCurrentUserRoom(false);
-                    }
-                    if(currentRoomIndex && currentUserIndex) {}
-                    for(var i = 0; i < self.usersRepository()[currentUserIndex].userRooms().length; i++) {
-                        if(self.usersRepository()[currentUserIndex].userRooms()[i].roomIndex() == currentRoomIndex) {
-                            isCurrentUserRoom(true);
-                        }
-                    }
-                    isCurrentUserRoom(false);
-                }, function () {
-
-                });
-                alert(isCurrentUserRoom);
-                return false;
-            };*/
-
-
-
-            var names = [
-                'Kirill',
-                'Vlad',
-                'Anton',
-                'Sergey',
-                'Genadiy',
-                'Aleksandr',
-                'Leonid',
-                'Dmitry',
-                'Artem',
-                'Pavel'
-            ] ;
-            var lastNames = [
-                'Kirillovich',
-                'Vladimirovich',
-                'Antonovich',
-                'Sergeevich',
-                'Genadievich',
-                'Aleksandrovich',
-                'Leonidovich',
-                'Dmitrievich',
-                'Artemovich',
-                'Kazimirovich'
-            ];
-
-            self.pushGeneratedUser = function( ) {
-                var name, lastName;
-                var randomValue = giveMeRandomValue(0,9);
-                name = names[randomValue];
-                randomValue = giveMeRandomValue(0,9);
-                lastName = lastNames[randomValue];
-
-                var newUserObject = new UserViewModel({
-                    name: name,
-                    lastName: lastName,
-                    id: self.usersRepository().length
-                });
-                self.usersRepository.push(newUserObject);
-            };
-
-            function giveMeRandomValue(min , max) {
-                return Math.floor(Math.random() * (max - min + 1)) + min;
+            self.findFullName = function(userID) {
+                var observableUser = $.grep(self.usersRepository(), function(item) {
+                    return item.id() === userID;
+                })[0];
+                return observableUser.fullName();
             }
-
 
         }
         return new UsersViewModel();

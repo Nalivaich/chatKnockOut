@@ -9,17 +9,19 @@ define(["../jquery", "../knockout-3.3.0", "services/messageService"],function($,
 
             var self = this;
 
-            self.idRoom = ko.observable(( data.idRoom || 0));
-            self.idUser = ko.observable(( data.idUser || 0));
-            self.message = ko.observable(( data.message || 0));
-            self.external = ko.observable(( data.external || 0));
+            data = $.extend({
+                id: 0,
+                idRoom: 0,
+                idUser: 0,
+                message: '',
+                external: ''
+            }, data);
 
-            self.add = function(userObject,onSuccess, onError) {
-                return(messageService.add(function () {
-                    onSuccess();
-                }, onError , userObject))
-            };
-
+            self.id = ko.observable( data.id );
+            self.idRoom = ko.observable( data.idRoom );
+            self.idUser = ko.observable( data.idUser );
+            self.message = ko.observable( data.message );
+            self.external = ko.observable( data.external );
 
         }
         return MessagesViewModel;
