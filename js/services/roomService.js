@@ -3,11 +3,9 @@
  */
 
 
-define(["../jquery", "VM/roomViewModel"],function($,  RoomViewModel ){
-            'use strict';
-
+define(["../jquery", "VM/roomViewModel"],function($){
+        'use strict';
         var self = {};
-
         var rooms = [];
 
         function asyncImitation(callback) {
@@ -16,7 +14,6 @@ define(["../jquery", "VM/roomViewModel"],function($,  RoomViewModel ){
 
         function getNewId() {
             var lastItem = rooms[rooms.length - 1] || { id: 0 };
-
             return lastItem.id + 1;
         }
 
@@ -41,11 +38,9 @@ define(["../jquery", "VM/roomViewModel"],function($,  RoomViewModel ){
 
         self.addUserToRoom = function(user, room, onSuccess, onError) {
             asyncImitation(function() {
-
                 var foundItem = $.grep(rooms, function (item) {
                     return item.id === room.id;
                 })[0];
-
                 var foundUserInRoom = $.grep(foundItem.usersIDInRoom, function (userItem) {
 
                     return userItem.userIndex === user.userIndex;
@@ -70,7 +65,6 @@ define(["../jquery", "VM/roomViewModel"],function($,  RoomViewModel ){
             })[0];
 
             observableRoom.messagesHistory.push({message: object.message, userId: object.userId });
-
             asyncImitation(function() {
                 onSuccess();
             });
@@ -90,9 +84,9 @@ define(["../jquery", "VM/roomViewModel"],function($,  RoomViewModel ){
                 var generatedRoom = {
                     id: getNewId(),
                     messagesHistory: [],
-                    createrId: getRandomValue(0, 5),
+                    createrId: getRandomValue(1, 5),
                     usersIDInRoom: [
-                        { userIndex: getRandomValue(0, 5) }
+                        { userIndex: getRandomValue(1, 5) }
                     ]
                 };
 
@@ -107,7 +101,6 @@ define(["../jquery", "VM/roomViewModel"],function($,  RoomViewModel ){
                 rooms.push(generateRoom());
             }
         })(7);
-
 
         return self;
     }

@@ -40,13 +40,13 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
                 });
             };
 
-            self.remove = function(currentRoomIndex, nextFunction) {
+            self.remove = function(currentRoomId, nextFunction) {
                 roomService.remove({
                     id: ''
                 }, function() {
                     var index;
                     for(var i = 0; i <  self.roomsRepository().length; i++) {
-                        if(self.roomsRepository()[i].id() == currentRoomIndex) {
+                        if(self.roomsRepository()[i].id() == currentRoomId) {
                             index = i;
                         }
                     }
@@ -59,14 +59,14 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
                 });
             };
 
-            self.addUserToRoom = function(userIndex, currentRoomIndex, nextfunction) {
+            self.addUserToRoom = function(userId, currentRoomId, nextfunction) {
                 roomService.addUserToRoom({
-                    userIndex: userIndex
+                    userIndex: userId
                 }, {
-                    id: currentRoomIndex
+                    id: currentRoomId
                 }, function() {
                     var observableRoom = $.grep(self.roomsRepository(), function(item) {
-                        return item.id() === currentRoomIndex;
+                        return item.id() === currentRoomId;
                     })[0];
 
                     if (!observableRoom) {
@@ -75,12 +75,12 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
 
                     var foundUserInRoom = $.grep(observableRoom.usersIDInRoom(), function (userItem, index) {
 
-                        return userItem.userIndex() === userIndex;
+                        return userItem.userIndex() === userId;
                     });
 
                     if (!foundUserInRoom.length) {
                         observableRoom.usersIDInRoom.push({
-                            userIndex: ko.observable(userIndex)
+                            userIndex: ko.observable(userId)
                         });
                     }
                 }, function() {
@@ -89,19 +89,19 @@ define(["../jquery", "../knockout-3.3.0", "VM/roomViewModel", "../services/roomS
             };
 
 
-            self.isUserInRoom = function(userIndex, currentRoomIndex, nextFunction) {
+            self.isUserInRoom = function(userId, currentRoomId, nextFunction) {
 
-                if(currentRoomIndex === '' || currentRoomIndex === '') {
+                if(currentRoomId === '' || currentRoomId === '') {
                     return false;
                 }
 
                 var observableRoom = $.grep(self.roomsRepository(), function(item) {
-                    return item.id() === currentRoomIndex;
+                    return item.id() === currentRoomId;
                 })[0];
 
                 var foundUserInRoom = $.grep(observableRoom.usersIDInRoom(), function (userItem, index) {
 
-                    return userItem.userIndex() === userIndex;
+                    return userItem.userIndex() === userId;
                 });
 
                 if (!foundUserInRoom.length) {

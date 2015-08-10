@@ -2,11 +2,9 @@
  * Created by vitali.nalivaika on 30.07.2015.
  */
 
-define(["../jquery", "VM/userViewModel"],function($, UserViewModel) {
+define(["../jquery", "VM/userViewModel"],function($) {
         'use strict';
-
         var self = {};
-
         var users = [];
 
         function asyncImitation(callback) {
@@ -30,7 +28,6 @@ define(["../jquery", "VM/userViewModel"],function($, UserViewModel) {
 
         self.addUserRoom = function(user, room, onSuccess, onError) {
             asyncImitation(function() {
-
                 var foundItem = $.grep(users, function (item) {
                     return item.id === user.userIndex;
                 })[0];
@@ -41,9 +38,9 @@ define(["../jquery", "VM/userViewModel"],function($, UserViewModel) {
         };
 
         self.isCurrentUserRoom = function(object, onSuccess, onError) {
-            window.setTimeout(
-                function() {
-                }, Math.random() * 1000 + 1000);
+            asyncImitation(function() {
+                onSuccess();
+            });
         };
 
         self.getAll = function(onSuccess, onError) {

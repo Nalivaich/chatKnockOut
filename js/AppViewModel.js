@@ -17,7 +17,6 @@
          self.roomCreaterFlag =  ko.observable(false);
          self.authorizationFlag = ko.observable(false);
          self.addOrRemove  = ko.observable(false);
-
          self.currentRoom = ko.pureComputed(function() {
              return self.roomsRepository().filter(function (item) {
                  return item.id() == self.currentRoomId();
@@ -45,13 +44,11 @@
                  self.roomCreaterFlag(allUsersVM.isCurrentUserRoom(self.currentRoomId(), self.currentUserId()));
                  self.activeRoomFlag(false);
              });
-
          };
 
-         self.addUserToRoom = function(userIndex) {
-             allRoomsVM.addUserToRoom(userIndex, self.currentRoomId());
+         self.addUserToRoom = function(userId) {
+             allRoomsVM.addUserToRoom(userId, self.currentRoomId());
          };
-
 
          self.showFullName = function(fullname, id, lastName) {
              alert(fullname());
@@ -62,7 +59,6 @@
                  self.currentUserId(param);
                  self.authorizationFlag(true);
              });
-
          };
 
          self.addMessage = function() {
@@ -71,13 +67,11 @@
                idUser: self.currentUserId(),
                message: self.currentMessage()
            });
-
            allRoomsVM.addMessage({
                currentRoomId: self.currentRoomId(),
                message: ko.observable(self.currentUserName() + " Say: " + self.currentMessage()),
                userId: self.currentUserId()
            });
-
            self.currentMessage('');
          };
 
@@ -99,6 +93,10 @@
 
          self.findFullName = function(userId) {
             return allUsersVM.findFullName(userId);
+         };
+
+         self.resetCurrentUserName = function() {
+             self.currentUserName('');
          }
      }
      ko.applyBindings(new AppViewModel());

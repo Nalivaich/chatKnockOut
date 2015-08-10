@@ -4,11 +4,8 @@
 
 
 define(["../jquery"],function($) {
-            'use strict';
-
+        'use strict';
         var self = {};
-
-
         var messages = [];
 
         function asyncImitation(callback) {
@@ -17,7 +14,6 @@ define(["../jquery"],function($) {
 
         function getNewId() {
             var lastItem = messages[messages.length - 1] || { id: 0 };
-
             return lastItem.id + 1;
         }
 
@@ -28,7 +24,6 @@ define(["../jquery"],function($) {
                 onSuccess(message);
             });
         };
-
 
         var messagesList = [
             'tell me something interesting',
@@ -42,7 +37,6 @@ define(["../jquery"],function($) {
             'We need to find a job',
             'enough to sit in the chat, you need to get down to business'
         ];
-
 
         return self;
         }

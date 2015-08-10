@@ -3,13 +3,11 @@
  */
 
 define(["../jquery", "../knockout-3.3.0", "VM/messageViewModel", "../services/messageService"],function($, ko, messageViewModel, messageService) {
-        function RoomsViewModel() {
+        function MessagesViewModel() {
             'use strict';
-
             var self = this;
 
             self.messageRepository = ko.observableArray([]);
-
 
             self.add = function(data) {
                 var newMessageObject = new messageViewModel({
@@ -21,11 +19,10 @@ define(["../jquery", "../knockout-3.3.0", "VM/messageViewModel", "../services/me
                     self.messageRepository.push(newObj);
                     return true;
                 }, function () {
-
+                    console.log('can\'t add message');
                 });
             };
-
         }
-        return new RoomsViewModel();
+        return new MessagesViewModel();
     }
 );

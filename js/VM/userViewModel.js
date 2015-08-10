@@ -5,7 +5,6 @@
 define(["../jquery", "../knockout-3.3.0"],function($, ko) {
         function UserViewModel(data) {
             'use strict';
-
             var self = this;
 
             data = $.extend({
@@ -22,7 +21,6 @@ define(["../jquery", "../knockout-3.3.0"],function($, ko) {
             self.password = ko.observable( data.password );
             self.userRooms = ko.observableArray( data.userRooms );
             self.external = ko.observable( data.external );
-
             self.fullName = ko.computed(function() {
                 return (self.name() + " " + self.lastName());
             });

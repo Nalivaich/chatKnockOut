@@ -2,11 +2,9 @@
  * Created by vitali.nalivaika on 30.07.2015.
  */
 
-
 define(["../jquery", "../knockout-3.3.0"],function($, ko) {
         function RoomViewModel(data) {
             'use strict';
-
             var self = this;
 
             data = $.extend({

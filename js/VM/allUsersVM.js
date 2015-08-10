@@ -55,17 +55,17 @@ define(["../jquery", "../knockout-3.3.0", "VM/userViewModel", "../services/userS
 
             };
 
-            self.isCurrentUserRoom = function(currentRoomIndex, currentUserIndex) {
-                if(currentRoomIndex === '' || currentUserIndex === '') {
+            self.isCurrentUserRoom = function(currentRoomId, currentUserId) {
+                if(currentRoomId === '' || currentUserId === '') {
                     return false;
                 }
 
                 var observableUser = $.grep(self.usersRepository(), function(item) {
-                    return item.id() === currentUserIndex;
+                    return item.id() === currentUserId;
                 })[0];
 
                 var foundUserInRoom = $.grep(observableUser.userRooms(), function (userItem, index) {
-                    return userItem.roomIndex === currentRoomIndex;
+                    return userItem.roomIndex === currentRoomId;
                 });
 
                 if (!foundUserInRoom.length) {
